@@ -3,13 +3,13 @@ import { getAllPokemon } from "./pokeapi";
 
 // Initialize Upstash Redis
 const redis = new Redis({
-  url: process.env.KV_REST_API_URL!, // Replace with your Upstash Redis URL
-  token: process.env.KV_REST_API_TOKEN!, // Replace with your Upstash Redis token
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
 });
 
 export const recordBattle = async (winner: number, loser: number) => {
   const recordPromises = Promise.all([
-    // Record battle
+    // Recording the battle
     redis.lpush(
       "battles:all",
       JSON.stringify({

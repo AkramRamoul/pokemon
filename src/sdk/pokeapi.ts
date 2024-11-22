@@ -8,17 +8,10 @@ export type Pokemon = {
 
 export type PokemonPair = [Pokemon, Pokemon];
 
-/**
- * Fetches all Pokemon from Gen 1-9 (up to #1025) from the PokeAPI GraphQL endpoint.
- * Each Pokemon includes their name, Pokedex number, and sprite URL.
- * Results are cached indefinitely using Next.js cache.
- */
 export async function getAllPokemon() {
   "use cache";
   unstable_cacheLife("forever");
 
-  // Use the graphql endpoint because the normal one won't let you get names
-  // in a single query
   const query = `
     query GetAllPokemon {
       pokemon_v2_pokemon(where: {id: {_lte: 1025}}) {
@@ -56,7 +49,7 @@ export async function getAllPokemon() {
 import { connection } from "next/server";
 
 export async function getTwoRandomPokemon() {
-  await connection(); // Next needed some help knowing this is dynamic
+  await connection(); //Ensures the function is treated as dynamic by Next.js.
 
   const allPokemon = await getAllPokemon();
   const shuffled = allPokemon.sort(() => 0.5 - Math.random());

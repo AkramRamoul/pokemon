@@ -52,7 +52,6 @@ async function VoteContent() {
                   const jar = await cookies();
                   jar.set("currentPair", JSON.stringify(nextPair));
 
-                  // Uncommenting this slows things down? Asked Vercel for more info
                   // revalidatePath("/turbo");
                 }}
                 className="px-8 py-3 bg-blue-500 text-white rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors"

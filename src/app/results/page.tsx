@@ -3,7 +3,7 @@ import PokemonSprite from "@/utils/pokemon-sprite";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Results | Roundest (RSC Version)",
+  title: "Results",
   description: "See the results",
 };
 
