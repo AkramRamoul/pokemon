@@ -43,7 +43,7 @@ async function VoteContent() {
               <button
                 formAction={async () => {
                   "use server";
-                  console.log("voted for", pokemon.name, pokemon.dexNumber);
+                  // console.log("voted for", pokemon.name, pokemon.dexNumber);
 
                   const loser = currentPokemonPair[index === 0 ? 1 : 0];
 
