@@ -1,21 +1,40 @@
-import { getTwoRandomPokemon } from "@/sdk/pokeapi";
+import { getTwoRandomPokemon, PokemonPair } from "@/sdk/pokeapi";
 import { recordBattle } from "@/sdk/vote";
-import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 import PokemonSprite from "@/utils/pokemon-sprite";
 import VoteFallback from "@/utils/vote-fallback";
 import RedirectButton from "./_components/RedirectButton";
 
+export const metadata = {
+  title: "Optimized Using cookies ",
+  description: "Vote for your favourite pokemons",
+};
+
 async function VoteContent() {
-  const twoPokemon = await getTwoRandomPokemon();
+  const currentPokemonPairJSON = (await cookies()).get("currentPair")?.value;
+  const currentPokemonPair = currentPokemonPairJSON
+    ? (JSON.parse(currentPokemonPairJSON) as PokemonPair)
+    : await getTwoRandomPokemon();
+
+  const nextPair = await getTwoRandomPokemon();
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-center text-3xl font-bold mt-6">
-        Who would win this matchup
+        Vote for who you think would win this matchup
       </h1>
-      <div className="flex justify-center gap-16 items-center min-h-[80vh]">
-        {twoPokemon.map((pokemon, index) => (
+      <div className="flex justify-center gap-16 items-center min-h-[80vh] overflow-hidden ">
+        <div className="hidden">
+          {nextPair.map((pokemon) => (
+            <PokemonSprite
+              key={pokemon.dexNumber}
+              pokemon={pokemon}
+              className="w-64 h-64"
+            />
+          ))}
+        </div>
+        {currentPokemonPair.map((pokemon, index) => (
           <div
             key={pokemon.dexNumber}
             className="flex flex-col items-center gap-4"
@@ -30,10 +49,14 @@ async function VoteContent() {
                 <button
                   formAction={async () => {
                     "use server";
-                    console.log("voted for", pokemon.name);
-                    const loser = twoPokemon[index === 0 ? 1 : 0];
+                    const loser = currentPokemonPair[index === 0 ? 1 : 0];
+
                     recordBattle(pokemon.dexNumber, loser.dexNumber);
-                    revalidatePath("/");
+
+                    const jar = await cookies();
+                    jar.set("currentPair", JSON.stringify(nextPair));
+
+                    // revalidatePath("/");
                   }}
                   className="px-8 py-3 bg-blue-500 text-white rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors"
                 >
