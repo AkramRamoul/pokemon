@@ -1,10 +1,7 @@
 import { getRankings } from "@/sdk/vote";
 import PokemonSprite from "@/utils/pokemon-sprite";
 import { Suspense } from "react";
-
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const revalidate = 30;
+import { connection } from "next/server";
 
 export const metadata = {
   title: "Results",
@@ -12,7 +9,7 @@ export const metadata = {
 };
 
 async function Results() {
-  "use cache";
+  await connection();
   const rankings = await getRankings();
 
   return (
