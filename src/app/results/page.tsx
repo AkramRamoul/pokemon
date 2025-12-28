@@ -1,6 +1,7 @@
 import { getRankings } from "@/sdk/vote";
 import PokemonSprite from "@/utils/pokemon-sprite";
 import { Suspense } from "react";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Results",
