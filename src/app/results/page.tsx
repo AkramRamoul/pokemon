@@ -1,7 +1,10 @@
 import { getRankings } from "@/sdk/vote";
 import PokemonSprite from "@/utils/pokemon-sprite";
 import { Suspense } from "react";
+
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const revalidate = 30;
 
 export const metadata = {
   title: "Results",
