@@ -7,11 +7,8 @@ export const metadata = {
   description: "See the results",
 };
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const revalidate = 30;
-
 async function Results() {
+  "use cache";
   const rankings = await getRankings();
 
   return (
