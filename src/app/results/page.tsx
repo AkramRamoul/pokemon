@@ -9,7 +9,25 @@ export const metadata = {
 
 async function Results() {
   "use cache";
-  const rankings = await getRankings();
+    interface PokemonStats {
+      wins: number;
+      losses: number;
+      winRate: number;
+    }
+
+    interface Pokemon {
+      dexNumber: number;
+      name: string;
+      stats: PokemonStats;
+    }
+
+    let rankings: Pokemon[] = [];
+
+  try {
+    rankings = await getRankings();
+  } catch (e) {
+    console.error("getRankings failed", e);
+  }
 
   return (
     <div className="contents" key="results">
